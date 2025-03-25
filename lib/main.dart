@@ -4,10 +4,14 @@ import 'package:cinemapedia/config/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+
+Future<void> main() async{
+
   
-  runApp( const ProviderScope(child: MainApp()));
+
+  runApp(
+    const ProviderScope(child: MainApp() )
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -17,10 +21,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       routerConfig: appRouter,
-      
-      theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
-      
+      theme: AppTheme().getTheme(),
     );
   }
 }
