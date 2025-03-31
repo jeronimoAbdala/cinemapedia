@@ -35,6 +35,9 @@ void initState() {
   super.initState();
   Future.microtask(() {
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+   
   });
 }
 
@@ -44,15 +47,20 @@ Widget build(BuildContext context) {
   // final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
   final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
   final slidesShowMovies = ref.watch(moviesSlideShowProvider);
+  final popularMovies = ref.watch(popularMoviesProvider);
+  final topRatedMovies = ref.watch(topRatedMoviesProvider);
 
   
   
   return CustomScrollView(
     slivers:[
 
-      const SliverAppBar(
+       SliverAppBar(
         floating: true,
-        title: Text('Hola mundo'),
+     
+        flexibleSpace: FlexibleSpaceBar(
+          title: CustomAppBar(),
+        ),
       ),
 
       SliverList(delegate: SliverChildBuilderDelegate((context, index) {
@@ -71,17 +79,17 @@ Widget build(BuildContext context) {
           ,
           ),
         MovieHorizontalListview(
-          label: 'En Cines',
-          sublabel: 'Lunes 20',
-          movies: nowPlayingMovies,
-          loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
+          label: 'Populares',
+          sublabel: '',
+          movies: popularMovies,
+          loadNextPage: () => ref.read(popularMoviesProvider.notifier).loadNextPage()
           ,
           ),
         MovieHorizontalListview(
           label: 'En Cines',
           sublabel: 'Lunes 20',
-          movies: nowPlayingMovies,
-          loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
+          movies: topRatedMovies,
+          loadNextPage: () => ref.read(topRatedMoviesProvider.notifier).loadNextPage()
           ,
           ),
         MovieHorizontalListview(
