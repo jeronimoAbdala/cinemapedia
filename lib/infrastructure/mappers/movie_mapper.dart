@@ -22,15 +22,6 @@ class MovieMapper {
   voteCount: moviedb.voteCount);
 
 
-
-
-
-
-
-
-
-
-
   static Movie movieDetailsToEntity( MovieDetails movie) => Movie(
     adult: movie.adult , 
   backdropPath: movie.backdropPath != '' ? 'https://image.tmdb.org/t/p/w500${movie.backdropPath}' : 'https://img.freepik.com/vector-gratis/poster-error-404-pagina-no-encontrada-usar-sitio-web_1284-49337.jpg', 
