@@ -4,6 +4,7 @@ import 'package:cinemapedia/config/constant/environment.dart';
 import 'package:cinemapedia/domain/datasources/movies_datasource.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinemapedia/infrastructure/models/moviedb/movie_details.dart';
 import 'package:cinemapedia/infrastructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 
@@ -73,6 +74,26 @@ class MoviedbDatasource extends MoviesDatasource {
     ).toList();
 
     return movies;
+  }
+  
+  @override
+  Future<Movie> getMovieById(String id)async {
+    //Vamos a trabajar con el nuevo metodo para obtener una peli por el id.
+
+    // Primero con dio mandamoos la peticion para obtener los datos de la peli con el id
+    final response = await dio.get('/movie/$id');
+    if (response.statusCode != 200) throw Exception('Not found');
+    //Si no la encontramos poner not found
+
+    //Vamos a crear un nuevo modelo el cual tendra toda la estuctura de la peticion http a la api themoviedb
+    final movieDetails = MovieDetails.fromJson(response.data);
+
+    //A esta peticion la vamos a pasar por un mapper para poder utilizar cada campo como una entidad.
+    final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+
+    //Retornamos esta entidad
+    return movie;
+
   }
 
 
