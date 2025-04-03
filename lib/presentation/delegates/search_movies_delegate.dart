@@ -52,7 +52,7 @@ class SearchMoviesDelegate extends SearchDelegate {
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return MovieItem(movie);
+          return MovieItem(movie:movie, onMovieSelected: ()=>'dsa',);
 
         },
       );
