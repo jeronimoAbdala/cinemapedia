@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +10,31 @@ class SearchMoviesDelegate extends SearchDelegate {
 
 
   final SearchMoviesCallback searchMovies ;
+  StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+
+  Timer? debounceTimer;
 
   SearchMoviesDelegate({
     required this.searchMovies
   });
 
-  
+  void onQueryChanged(String query)  {
+    if(debounceTimer?.isActive ?? false) debounceTimer!.cancel();
+
+    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+
+      if(query.isEmpty) {
+        debounceMovies.add([]);
+        return;
+      }
+
+      final movies = await searchMovies(query);
+      debounceMovies.add(movies);
+
+    });
+  }
+
+
 
   @override
   String get searchFieldLabel => 'Buscar peli';
@@ -21,6 +42,8 @@ class SearchMoviesDelegate extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
+      
+
       FadeIn(
         animate: query.isNotEmpty,
         child: IconButton(
@@ -32,7 +55,10 @@ class SearchMoviesDelegate extends SearchDelegate {
 
   @override
   Widget? buildLeading(BuildContext context) {
-    return IconButton(onPressed: ()=> close(context, null), icon: const Icon(Icons.arrow_back_ios_new_outlined));
+    return IconButton(onPressed: ()=> 
+    
+    close(context, null), 
+    icon: const Icon(Icons.arrow_back_ios_new_outlined));
   }
 
   @override
@@ -42,8 +68,12 @@ class SearchMoviesDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-    future: searchMovies(query), 
+
+    onQueryChanged(query);
+
+    return StreamBuilder(
+    // future: searchMovies(query), 
+    stream: debounceMovies.stream,
     initialData: const [],
     builder: (context,snapshot){
       final movies = snapshot.data ?? [];
@@ -52,7 +82,7 @@ class SearchMoviesDelegate extends SearchDelegate {
         itemCount: movies.length,
         itemBuilder: (context, index) {
           final movie = movies[index];
-          return MovieItem(movie:movie, onMovieSelected: ()=>'dsa',);
+          return MovieItem(movie:movie, onMovieSelected: close,);
 
         },
       );
@@ -77,10 +107,17 @@ class MovieItem extends StatelessWidget {
     final textStyles = Theme.of(context).textTheme;
     final size = MediaQuery.of(context).size;
 
+
+
     return GestureDetector(
       onTap: () {
         onMovieSelected(context, movie);
       },
+
+
+
+
+
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: Row(
