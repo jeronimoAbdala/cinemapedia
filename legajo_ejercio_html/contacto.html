@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto · CinemaGuide</title>
+  </head>
+  <body>
+    <header>
+      <h1>CinemaGuide</h1>
+      <nav>
+        <a href="index.html">Inicio</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h2>Formulario de Contacto</h2>
+        <p>Completá el formulario y nos comunicaremos a la brevedad.</p>
+        <form
+          action="https://labsys.frc.utn.edu.ar/dds-express/eco"
+          method="POST">
+
+          <fieldset>
+            <legend>Datos personales</legend>
+
+            <label for="nombre">Nombre completo *</label>
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Juan García"
+              required>
+
+            <label for="email">Correo electrónico *</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="juan@email.com"
+              required>
+
+            <label for="telefono">Teléfono</label>
+            <input
+              type="tel"
+              id="telefono"
+              name="telefono"
+              placeholder="+54 351 000-0000">
+          </fieldset>
+
+          <fieldset>
+            <legend>Consulta</legend>
+
+            <label for="fecha">Fecha de consulta *</label>
+            <input
+              type="date"
+              id="fecha"
+              name="fecha"
+              required>
+
+            <label for="motivo">Motivo del contacto *</label>
+            <select
+              id="motivo"
+              name="motivo"
+              required>
+              <option value="">— Seleccioná un motivo —</option>
+              <option value="consulta">Consulta general</option>
+              <option value="soporte">Soporte técnico</option>
+              <option value="presupuesto">Solicitud de presupuesto</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <label for="mensaje">Mensaje *</label>
+            <textarea
+              id="mensaje"
+              name="mensaje"
+              rows="5"
+              placeholder="Escribí tu mensaje aquí..."
+              minlength="20"
+              required>
+            </textarea>
+          </fieldset>
+
+          <button type="submit">Enviar mensaje</button>
+          <button type="reset">Limpiar formulario</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>CinemaGuide · 2026</p>
+    </footer>
+  </body>
+</html>
